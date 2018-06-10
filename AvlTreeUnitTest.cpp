@@ -340,7 +340,7 @@ static void massive()
     ANNOUNCE();
 
     const size_t SIZE_LIMIT = 128;
-    const size_t ITERATIONS = 1024 * 1024;
+    const size_t ITERATIONS = 4 * 1024 * 1024;
 
     Tree_t sTree;
     std::set<size_t> sRef;
