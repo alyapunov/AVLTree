@@ -29,10 +29,10 @@ template <class T>
 struct StdAllocator
 {
     typedef T value_type;
-    typedef T* pointer_type;
-    typedef const T* const_pointer_type;
-    typedef T& reference_type;
-    typedef const T& const_reference_type;
+    typedef T* pointer;
+    typedef const T* const_pointer;
+    typedef T& reference;
+    typedef const T& const_reference;
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
 
