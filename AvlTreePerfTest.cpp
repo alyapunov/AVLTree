@@ -29,10 +29,20 @@ template <class T>
 struct StdAllocator
 {
     typedef T value_type;
+    typedef T* pointer_type;
+    typedef const T* const_pointer_type;
+    typedef T& reference_type;
+    typedef const T& const_reference_type;
+    typedef std::size_t size_type;
+    typedef std::ptrdiff_t difference_type;
+
     StdAllocator() = default;
     template <class U> constexpr StdAllocator(const StdAllocator<U>&) noexcept {}
+    template <class U> struct rebind { typedef StdAllocator<U> other; };
+
     T* allocate(std::size_t n) { assert(n == 1); (void)n; return simpleAlloc<T>(); }
-    void deallocate(T*, std::size_t) noexcept { }
+    void deallocate(T*, std::size_t n) noexcept { assert(n == 1); (void)n; }
+    void destroy(T* p) { p->~T(); }
 };
 
 static size_t simpleReset()
@@ -100,6 +110,41 @@ static void alv_test()
     checkpoint("AVL erase", COUNT);
 
     std::cout << "AVL memory: " << simpleReset() / 1024 << "kB" << std::endl;
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        Test* t = simpleAlloc<Test>();
+        t->m_Value = rand();
+        sTree.insert(*t);
+    }
+    checkpoint("AVL rand insert", COUNT);
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        size_t val = rand();
+        SideEffect ^= sTree.find(val)->m_Value;
+    }
+    checkpoint("AVL rand find", COUNT);
+
+    for (Test& t : sTree)
+    {
+        SideEffect ^= t.m_Value;
+    }
+    checkpoint("AVL iteration", COUNT);
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        size_t val = rand();
+        Tree_t::iterator itr = sTree.find(val);
+        if (itr != sTree.end())
+            sTree.erase(*itr);
+    }
+    checkpoint("AVL rand erase", COUNT);
+
+    std::cout << "AVL memory: " << simpleReset() / 1024 << "kB" << std::endl;
 }
 
 // Set size_t
@@ -133,6 +178,37 @@ static void set_test()
         sSet.erase(*sSet.begin());
     }
     checkpoint("Set erase", COUNT);
+
+    std::cout << "Set memory: " << simpleReset() / 1024 << "kB" << std::endl;
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        sSet.insert(rand());
+    }
+    checkpoint("Set rand insert", COUNT);
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        size_t val = rand();
+        SideEffect ^= *sSet.find(val);
+    }
+    checkpoint("Set rand find", COUNT);
+
+    for (size_t i : sSet)
+    {
+        SideEffect ^= i;
+    }
+    checkpoint("Set iteration", COUNT);
+
+    srand(0);
+    for (size_t i = 0; i < COUNT; i++)
+    {
+        size_t val = rand();
+        sSet.erase(val);
+    }
+    checkpoint("Set rand erase", COUNT);
 
     std::cout << "Set memory: " << simpleReset() / 1024 << "kB" << std::endl;
 }
