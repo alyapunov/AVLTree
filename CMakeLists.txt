@@ -14,8 +14,8 @@ ENDIF()
 
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_C_STANDARD 11)
-SET(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
-SET(CMAKE_C_FLAGS "-Wall -Wextra -Werror")
+SET(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Werror")
+SET(CMAKE_C_FLAGS "-Wall -Wextra -Wpedantic -Werror")
 
 include_directories(.)
 add_executable(AvlTreeUnit.test AvlTree.hpp AvlTreeUnitTest.cpp)

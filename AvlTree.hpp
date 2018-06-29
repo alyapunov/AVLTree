@@ -685,4 +685,4 @@ Node* traverse(Node* aNode, bool aBackward)
     return const_cast<Node*>(traverse(const_cast<const Node*>(aNode), aBackward));
 }
 
-}; // namespace Avl
+} // namespace Avl
