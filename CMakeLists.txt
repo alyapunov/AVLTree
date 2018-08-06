@@ -22,4 +22,4 @@ add_executable(AvlTreeUnit.test AvlTree.hpp AvlTreeUnitTest.cpp)
 add_executable(AvlTreePerf.test AvlTree.hpp AvlTreePerfTest.cpp)
 
 enable_testing()
-add_test(NAME AvlTree.test COMMAND AvlTree.test)
+add_test(NAME AvlTreeUnit.test COMMAND AvlTreeUnit.test)
